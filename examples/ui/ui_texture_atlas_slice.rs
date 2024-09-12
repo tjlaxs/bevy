@@ -4,6 +4,7 @@
 use bevy::{
     color::palettes::css::{GOLD, ORANGE},
     prelude::*,
+    render::texture::{ImageLoaderSettings, ImageSampler},
     winit::WinitSettings,
 };
 
@@ -49,7 +50,10 @@ fn setup(
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    let texture_handle = asset_server.load("textures/fantasy_ui_borders/border_sheet.png");
+    let texture_handle = asset_server.load_with_settings(
+        "textures/fantasy_ui_borders/border_sheet.png",
+        |settings: &mut ImageLoaderSettings| settings.sampler = ImageSampler::nearest(),
+    );
     let atlas_layout =
         TextureAtlasLayout::from_grid(UVec2::new(50, 50), 6, 6, Some(UVec2::splat(2)), None);
     let atlas_layout_handle = texture_atlases.add(atlas_layout);
